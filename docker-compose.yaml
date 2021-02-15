@@ -11,19 +11,18 @@ services:
       - mongo
     volumes:
       - .:/hangman
-    environment:
-      BASE_URL: http://localhost/
-      PORT: 80
-      MONGO_URL: mongodb://mongo:27017
-      REDIS_HOSTNAME: redis
-      REDIS_PORT: 6379
+    env_file: '.env'
   mongo:
     image: mongo:4.4.3-bionic
     container_name: mongo
+    ports:
+      - "27017:27017"
     volumes:
       - ./mongo:/data/db
   redis:
     image: redis:alpine3.12
     container_name: redis
+    ports:
+      - "6379:6379"
     depends_on:
       - mongo

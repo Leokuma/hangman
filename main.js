@@ -1,41 +1,8 @@
 import {serve} from './deps.js';
-import {MongoClient} from './deps.js';
 import {connect} from './deps.js';
+import {Hangman} from './deps.js';
 
-const ws = new WebSocket('wss://gateway.discord.gg/v=8&encoding=json');
-
-ws.addEventListener('error', function (event) {
-	console.log(event.data);
-});
-
-ws.addEventListener('open', function (event) {
-	console.log('conectou');
-	ws.send(JSON.stringify({
-		"op": 1,
-		"d": null
-	}));
-
-	ws.send(JSON.stringify({
-		"op": 2,
-		"d": {
-			"token": "Nzk2MzYyNDQ1MjQ0ODU4Mzc4.X_W0Ug.b0X_rbhldf4ta2Z7zSaJbUPJ5Po",
-			"intents": 13824,
-			"properties": {
-				"$os": "linux",
-				"$browser": "Deno",
-				"$device": "Deno"
-			}
-		}
-	}));
-});
-
-// Listen for messages
-ws.addEventListener('message', function (event) {
-	console.log('Message from server ', event.data);
-});
-
-
-
+(new Hangman()).connect();
 
 // const server = serve({port: +Deno.env.get('PORT')});
 
