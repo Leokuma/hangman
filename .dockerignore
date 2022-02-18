@@ -1,0 +1,10 @@
+.dockerignore
+.settings
+.vscode
+.env
+.git
+.gitignore
+mongo
+Dockerfile
+docker-compose.yaml
+README.md
