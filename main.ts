@@ -76,17 +76,17 @@ const bot = createBot({
 
 				switch (interaction.data?.customId) {
 					case 'clue': {
-						match.currentWord()?.requestClue();
+						match.currentWord?.requestClue();
 
 						break;
 					}
 					case 'synonym': {
-						match.currentWord()?.requestSynonym();
+						match.currentWord?.requestSynonym();
 
 						break;
 					}
 					case 'example': {
-						match.currentWord()?.requestExample();
+						match.currentWord?.requestExample();
 
 						break;
 					}
@@ -192,13 +192,13 @@ const bot = createBot({
 		messageCreate(_bot, message) {
 			const match = matchManager.get(message.channelId);
 
-			if (!match || !match.currentWord())
+			if (!match || !match.currentWord)
 				return;
 
 			const msg = message.content.toLowerCase().trim();
 
-			if (msg.length == 1 || msg.length == match.currentWord()?.plain().length) {
-				match.currentWord()?.guess(msg);
+			if (msg.length == 1 || msg.length == match.currentWord?.plain.length) {
+				match.currentWord?.guess(msg);
 			}
 		}
 	}

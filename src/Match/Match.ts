@@ -53,7 +53,7 @@ export class Match {
 		}
 	}
 
-	currentWord(): Word | undefined {
+	get currentWord(): Word | undefined {
 		return this.#words[this.#currentWord];
 	}
 
@@ -61,16 +61,11 @@ export class Match {
 		if (this.#finished)
 			return false;
 
+		this.#finished = true;
+
 		clearInterval(this.#ticId);
 
-		if (this.currentWord())
-			this.currentWord()?.finish();
-
-		sendMessage(this.#config.bot, this.#config.channelId, {
-			content: 'Match is over!'
-		});
-
-		this.#finished = true;
+		this.currentWord?.finish();
 
 		this.onFinish();
 
@@ -84,12 +79,10 @@ export class Match {
 	onTime(secondsElapsed: number, secondsLeft: number) {}
 
 	start(): boolean {
-		const currentWord = this.currentWord();
-
-		if (!currentWord)
+		if (!this.currentWord)
 			return false;
 
-		currentWord.start();
+		this.currentWord.start();
 
 		this.#started = true;
 
@@ -113,10 +106,7 @@ export class Match {
 	}
 
 	timeUp() {
-		sendMessage(this.#config.bot, this.#config.channelId, {
-			content: 'Time is up!'
-		});
-
+		this.currentWord?.timeUp();
 		this.finish();
 	}
 

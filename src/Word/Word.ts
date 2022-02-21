@@ -144,10 +144,10 @@ export class Word {
 			found = (this.#word == letterOrWord);
 		}
 
-		this.post();
-
 		if (found && !this.wildcarded().includes(Word.wildcard))
 			this.finish();
+
+		this.post();
 
 		return found;
 	}
@@ -168,26 +168,37 @@ export class Word {
 
 	/** @todo Declare as TypeScript callback. */
 	onTime(secondsElapsed: number, secondsLeft: number) {
-		if (secondsLeft == 10)
+		if (secondsLeft == 5)
 			sendMessage(this.#config.bot, this.#config.channelId, {
-				content: '10 seconds left!'
+				content: 'Only 5 seconds left!'
 			});
 	}
 
-	plain(): string {
+	get plain(): string {
 		return this.#word;
 	}
 
-	post() {
+	post(reveal = false) {
+		let word = '';
+		if (reveal) {
+			word = this.plain
+				.replaceAll(/(\S)/g, `:regional_indicator_$1:`)
+				.replaceAll(' ', ':heavy_minus_sign:')
+				.replaceAll('::', ': :')
+				+ '.';
+		} else {
+			word = this.wildcarded()
+				.replaceAll(new RegExp(`([^${Word.wildcard}\\s])`, 'g'), `:regional_indicator_$1:`)
+				.replaceAll(' ', ':heavy_minus_sign:')
+				.replaceAll(Word.wildcard, ':blue_square:')
+				.replaceAll('::', ': :')
+				+ '.';
+		}
+
 		const msg: CreateMessage = {
 			embeds: [{
-				description: this.wildcarded()
-					.replaceAll(new RegExp(`([^${Word.wildcard}\\s])`, 'g'), `:regional_indicator_$1:`)
-					.replaceAll(' ', ':heavy_minus_sign:')
-					.replaceAll(Word.wildcard, ':blue_square:')
-					.replaceAll('::', ': :')
-					+ '.',
-				color: 0xA7BFAB,
+				description: word,
+				color: 0x132F44,
 				fields: []
 			}]
 		};
@@ -344,10 +355,11 @@ export class Word {
 	}
 
 	timeUp() {
-		/** @todo Show full (or almost full) explanation for the word */
 		sendMessage(this.#config.bot, this.#config.channelId, {
-			content: 'Time is up for this word!'
+			content: 'Time is up!'
 		});
+
+		this.post(true);
 
 		this.finish();
 	}
