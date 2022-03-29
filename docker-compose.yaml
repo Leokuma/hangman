@@ -1,0 +1,31 @@
+version: '3'
+services:
+  bot:
+    build: .
+    image: hangman
+    container_name: hangman-bot
+    command: deno run --allow-env --allow-net --no-check=remote start.ts
+    ports:
+      - '80:80'
+    depends_on:
+      - redis
+      - mongo
+    volumes:
+      - .:/hangman
+    env_file: '.env'
+  mongo:
+    image: mongo:5.0.6
+    container_name: hangman-mongo
+    ports:
+      - '27017:27017'
+    env_file: '.env'
+  redis:
+    image: redis:6.2.6
+    container_name: hangman-redis
+    command: redis-server /usr/local/etc/redis/redis.conf
+    ports:
+      - '6379:6379'
+    depends_on:
+      - mongo
+    volumes:
+      - ./redis:/usr/local/etc/redis
