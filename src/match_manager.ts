@@ -1,20 +1,18 @@
-import {Match} from './Match.ts';
-import type {MatchConfig} from './MatchConfig.ts';
-import {sendMessage} from '../../deps.ts';
+import {Discordeno} from '../deps.ts';
+import {Match, MatchConfig} from './match.ts';
 
 export class MatchManager {
 	/** Cached ongoing matches. */
 	#matches: Map<MatchConfig['channelId'], Match>;
 
-
 	constructor() {
 		this.#matches = new Map();
 	}
 
-	add(match: Match): boolean {
+	async add(match: Match): Promise<boolean> {
 		if (this.hasOngoingMatch(match.channelId)) {
-			sendMessage(match.bot, match.channelId, {
-				content: ':exclamation: There is already an ongoing match in the current channel.'
+			Discordeno.sendMessage(match.bot, match.channelId, {
+				content: '❗ There is already an ongoing match in this current channel.'
 			});
 
 			return false;
@@ -24,7 +22,7 @@ export class MatchManager {
 
 		match.onFinish = () => this.#matches.delete(match.channelId);
 
-		return match.start();
+		return await match.start();
 	}
 
 	get(channelId: bigint): Match | undefined {
@@ -36,6 +34,6 @@ export class MatchManager {
 	}
 
 	hasOngoingMatch(channelId: MatchConfig['channelId']): boolean {
-		return !!this.#matches.get(channelId);
+		return this.#matches.has(channelId);
 	}
 }
