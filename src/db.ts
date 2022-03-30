@@ -5,14 +5,17 @@ export async function addChannel(channelId: bigint) {
 	const channelIdLong = Mongo.Bson.Long.fromBigInt(channelId);
 	const mongo = new Mongo.MongoClient();
 	await mongo.connect(Env.Mongo.CONNECT_OPTIONS);
-
 	const channels = mongo.database('hangman').collection('channels');
 
 	if (await channels.findOne({id: channelIdLong}))
 		return false;
 
-	return await channels.insertOne({
+	const ret = await channels.insertOne({
 		id: channelIdLong,
 		status: 1
 	});
+
+	mongo.close();
+
+	return ret;
 }

@@ -18,9 +18,8 @@ export class MatchManager {
 			return false;
 		}
 
-		this.#matches.set(match.channelId, match);
-
 		match.onFinish = () => this.#matches.delete(match.channelId);
+		this.#matches.set(match.channelId, match);
 
 		return await match.start();
 	}

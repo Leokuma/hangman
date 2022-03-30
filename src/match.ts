@@ -4,6 +4,7 @@ import {getRandomEntryFromSearch} from './collins.ts';
 import {Round} from './round.ts';
 
 export interface MatchConfig {
+	autoHints?: number;
 	bot: Discordeno.Bot;
 	channelId: bigint;
 	/** In seconds. */
@@ -38,11 +39,8 @@ export class Match {
 			return false;
 
 		this.#finished = true;
-
 		clearInterval(this.#ticId);
-
 		this.getCurrentRound()?.finish();
-
 		this.onFinish();
 
 		return true;
@@ -64,6 +62,7 @@ export class Match {
 				continue;
 
 			const round = new Round({
+				autoHints: this.#config.autoHints,
 				bot: this.#config.bot,
 				channelId: this.#config.channelId,
 				hintsAllowed: 10,

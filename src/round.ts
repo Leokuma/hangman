@@ -2,12 +2,13 @@ import {Discordeno} from '../deps.ts';
 import {Word} from './word.ts';
 
 export interface RoundConfig {
+	autoHints?: number;
 	bot: Discordeno.Bot;
 	channelId: bigint;
-	hintsAllowed?: number;
 	/** In seconds. */
 	duration?: number;
 	examplesAllowed?: number;
+	hintsAllowed?: number;
 	synonymsAllowed?: number;
 	word: Word;
 }
@@ -28,6 +29,7 @@ export class Round {
 
 	constructor(config: RoundConfig) {
 		this.#config = config;
+		this.#hintsRequested = (this.#config.autoHints || 0);
 	}
 
 	finish(): boolean {
@@ -35,9 +37,7 @@ export class Round {
 			return false;
 
 		clearInterval(this.#ticId);
-
 		this.#finished = true;
-
 		this.onFinish();
 
 		return true;
@@ -54,11 +54,10 @@ export class Round {
 
 		let found: boolean;
 
-		if (letterOrWord.length == 1) {
+		if (letterOrWord.length == 1)
 			found = (this.word.text.includes(letterOrWord));
-		} else {
+		else
 			found = (this.word.text == letterOrWord);
-		}
 
 		if (found && !this.wildcarded().includes(Round.#LETTER_WILDCARD)) {
 			this.finish();
@@ -160,19 +159,21 @@ export class Round {
 				msg.components = [{
 					type: 1,
 					components: [{
-						style: 1,
-						label: 'Hint',
 						customId: 'hint',
 						disabled: false,
+						emoji: {name: '🔍'},
+						label: 'Hint',
+						style: 1,
 						type: 2
 					}]
 				}]
 			} else {
 				msg.components[0].components.push({
-					style: 1,
-					label: 'Hint',
 					customId: 'hint',
 					disabled: false,
+					emoji: {name: '🔍'},
+					label: 'Hint',
+					style: 1,
 					type: 2
 				})
 			}
@@ -206,19 +207,25 @@ export class Round {
 				msg.components = [{
 					type: 1,
 					components: [{
-						style: 1,
-						label: 'Example',
 						customId: 'example',
 						disabled: false,
+						emoji: {
+							name: '🗨️'
+						},
+						label: 'Example',
+						style: 1,
 						type: 2
 					}]
 				}]
 			} else {
 				msg.components[0].components.push({
-					style: 1,
-					label: 'Example',
 					customId: 'example',
 					disabled: false,
+					emoji: {
+						name: '🗨️'
+					},
+					label: 'Example',
+					style: 1,
 					type: 2
 				})
 			}
