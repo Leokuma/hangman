@@ -4,8 +4,8 @@ import type {Word} from './word.ts';
 export async function getEntry(id: string): Promise<Word | null> {
 	const entry = await API.getEntry(id);
 
-	const hints = [...entry.entryContent.querySelectorAll('def')].map(def => def.textContent);
 	const examples = [...entry.entryContent.querySelectorAll('quote')].map(quote => quote.textContent);
+	const hints = [...entry.entryContent.querySelectorAll('def')].map(def => def.textContent);
 	const inflections = [...new Set([...entry.entryContent.querySelectorAll('orth')].map(orth => orth.textContent))];
 
 	const wordTag = entry.entryContent.querySelector('orth');

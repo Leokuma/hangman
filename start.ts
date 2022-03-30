@@ -33,9 +33,10 @@ const bot = Discordeno.createBot({
 				});
 
 				const match = new Match({
-					duration: 300,
+					autoHints: 1,
 					bot: bot,
 					channelId: interaction.channelId,
+					duration: 300,
 					rounds: 1
 				});
 
