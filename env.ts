@@ -3,8 +3,6 @@ import {
 	Redis as RedisClient
 } from './deps.ts'
 
-console.log('LOADING ENV');
-
 const APP_ID = <bigint><unknown>Deno.env.get('HANGMAN_APP_ID');
 const TOKEN = <string>Deno.env.get('HANGMAN_TOKEN');
 const COLLINS_URL = <string>Deno.env.get('COLLINS_API_URL');

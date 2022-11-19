@@ -113,6 +113,7 @@ export class Match {
 	}
 
 	timeUp() {
+		// ⏱
 		this.getCurrentRound()?.timeUp();
 		this.finish();
 	}

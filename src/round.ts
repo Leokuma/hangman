@@ -291,6 +291,7 @@ export class Round {
 	}
 
 	timeUp() {
+		// ⏱
 		Discordeno.sendMessage(this.#config.bot, this.#config.channelId, {
 			content: 'Time is up!'
 		});
