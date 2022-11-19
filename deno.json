@@ -1,0 +1,7 @@
+{
+  "tasks": {
+    "cache:sync:channels": "deno run --allow-env --allow-net --no-lock scripts/cache_sync_channels.ts",
+    "cache:sync:words":"deno run --allow-env --allow-net --no-lock scripts/cache_sync_words.ts",
+    "db:create": "deno run --allow-env --allow-net --no-lock scripts/db_create.ts"
+  }
+}

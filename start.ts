@@ -19,7 +19,6 @@ const bot = Discordeno.createBot({
 			if (interaction.data?.name == 'hangman') {
 				if (matchManager.hasOngoingMatch(interaction.channelId)) {
 					Discordeno.sendInteractionResponse(bot, interaction.id, interaction.token, {
-						private: true,
 						type: 4,
 						data: {content: '❗ There is an ongoing match in the current channel.'}
 					});
@@ -27,7 +26,6 @@ const bot = Discordeno.createBot({
 				}
 
 				Discordeno.sendInteractionResponse(bot, interaction.id, interaction.token, {
-					private: true,
 					type: 4,
 					data: {content: "Let's play!"}
 				});
@@ -72,7 +70,7 @@ const bot = Discordeno.createBot({
 		},
 
 		ready(bot) {
-			console.log('CONNECTED');
+			console.log('READY');
 
 			Discordeno.createApplicationCommand(bot, {
 				description: "🎗 Play Hangman by HelloLingers!",

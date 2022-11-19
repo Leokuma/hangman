@@ -1,11 +1,13 @@
 .dockerignore
-.env
+*.env
 .git
 .gitignore
 .settings
 .vscode
 docker-compose.yaml
 Dockerfile
+LICENSE
 mongo
 README.md
+redis
 vendor
